@@ -6,12 +6,12 @@ A plugin to export clan or friends chat to a file with various options
 
 Right click either the Friends Chat or Clan Chat icons and select to export:
 
-![img.png](img.png)
+![alt text](https://i.imgur.com/11ShVLM.png)
 
 This will result in a file being created with the exported lists in the clanlistexports folder in your .runelite folder.
 # Config options
 
-![img_1.png](img_1.png)
+![alt text](https://i.imgur.com/wGBKiSm.png)
 
 The include offline members will export everyone from clan chat regardless of their online/offline status
 
