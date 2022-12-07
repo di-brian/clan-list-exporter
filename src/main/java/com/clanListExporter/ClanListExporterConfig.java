@@ -5,8 +5,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("ClanListExporter")
-public interface ClanListExporterConfig extends Config
-{
+public interface ClanListExporterConfig extends Config {
 	@ConfigItem(position = 1, keyName = "fullClanChat", name = "Include offline members", description = "When exporting clan chat, optionally export offline members")
 	default boolean fullClanChat() {
 		return true;

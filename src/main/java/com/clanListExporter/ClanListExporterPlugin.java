@@ -1,11 +1,14 @@
 package com.clanListExporter;
 
 import com.google.inject.Provides;
-import javax.inject.Inject;
-
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
-import net.runelite.api.clan.*;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.FriendsChatMember;
+import net.runelite.api.GameState;
+import net.runelite.api.clan.ClanChannelMember;
+import net.runelite.api.clan.ClanMember;
+import net.runelite.api.clan.ClanSettings;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
@@ -17,6 +20,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -31,25 +35,7 @@ import static net.runelite.client.RuneLite.RUNELITE_DIR;
 @PluginDescriptor(
 		name = "Clan List Exporter"
 )
-public class ClanListExporterPlugin extends Plugin
-{
-	@Inject
-	private Client client;
-
-	@Inject
-	private ClanListExporterConfig config;
-
-	@Inject
-	private ChatMessageManager chatMessageManager;
-
-	@Inject
-	private MenuManager menuManager;
-
-	@Provides
-	ClanListExporterConfig getConfig(ConfigManager configManager) {
-		return (ClanListExporterConfig) configManager.getConfig(ClanListExporterConfig.class);
-	}
-
+public class ClanListExporterPlugin extends Plugin {
 	public static final File EXPORT_DIR = new File(RUNELITE_DIR, "clanlistexports");
 	private static final WidgetMenuOption FRIENDS_CHAT;
 	private static final WidgetMenuOption CLAN_CHAT;
@@ -59,15 +45,27 @@ public class ClanListExporterPlugin extends Plugin
 		CLAN_CHAT = new WidgetMenuOption("Export", "Clan Chat", 46333956);
 	}
 
+	@Inject
+	private Client client;
+	@Inject
+	private ClanListExporterConfig config;
+	@Inject
+	private ChatMessageManager chatMessageManager;
+	@Inject
+	private MenuManager menuManager;
+
+	@Provides
+	ClanListExporterConfig getConfig(ConfigManager configManager) {
+		return (ClanListExporterConfig) configManager.getConfig(ClanListExporterConfig.class);
+	}
+
 	@Override
-	protected void startUp() throws Exception
-	{
+	protected void startUp() throws Exception {
 		addExportMenuItem();
 	}
 
 	@Override
-	protected void shutDown() throws Exception
-	{
+	protected void shutDown() throws Exception {
 		removeExportMenuItem();
 	}
 
@@ -83,28 +81,28 @@ public class ClanListExporterPlugin extends Plugin
 
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event) throws Exception {
-		if(Text.removeTags(event.getMenuTarget()).equals("Friends Chat")){
+		if (Text.removeTags(event.getMenuTarget()).equals("Friends Chat")) {
 			exportList(ChatType.FRIENDS_CHAT);
 		}
-		if(Text.removeTags(event.getMenuTarget()).equals("Clan Chat")){
+		if (Text.removeTags(event.getMenuTarget()).equals("Clan Chat")) {
 			exportList(ChatType.CLAN_CHAT);
 		}
 	}
 
-	public void exportList(ChatType chatType){
-		if(client.getGameState() == GameState.LOGGED_IN) {
+	public void exportList(ChatType chatType) {
+		if (client.getGameState() == GameState.LOGGED_IN) {
 			List<String> listToWrite = getMembersList(chatType);
-			if(!listToWrite.isEmpty()) {
+			if (!listToWrite.isEmpty()) {
 				writeToFile(listToWrite, chatType, config.csvMode(), config.timestamp());
 			}
 		}
 	}
 
-	public List<String> getMembersList(ChatType chatType){
+	public List<String> getMembersList(ChatType chatType) {
 
 		ArrayList<String> memberList = new ArrayList<>();
 
-		if(chatType == ChatType.CLAN_CHAT) {
+		if (chatType == ChatType.CLAN_CHAT) {
 			if (client.getClanChannel() != null) {
 
 				ClanSettings clanSettings = this.client.getClanSettings();
@@ -127,12 +125,12 @@ public class ClanListExporterPlugin extends Plugin
 			}
 		}
 
-		if (chatType == ChatType.FRIENDS_CHAT){
-			if (client.getFriendsChatManager().getOwner() != null){
+		if (chatType == ChatType.FRIENDS_CHAT) {
+			if (client.getFriendsChatManager().getOwner() != null) {
 				for (FriendsChatMember friendsChatMember : (FriendsChatMember[]) this.client.getFriendsChatManager().getMembers()) {
-						memberList.add(Text.toJagexName(friendsChatMember.getName()));
-					}
-			}else{
+					memberList.add(Text.toJagexName(friendsChatMember.getName()));
+				}
+			} else {
 				chatMessageManager.queue(
 						QueuedMessage.builder()
 								.type(ChatMessageType.CONSOLE)
@@ -143,12 +141,12 @@ public class ClanListExporterPlugin extends Plugin
 		return memberList;
 	}
 
-	public void writeToFile(List<String> list, Enum chatType, boolean csvMode, boolean timestamp){
+	public void writeToFile(List<String> list, Enum chatType, boolean csvMode, boolean timestamp) {
 
-		String fileName = chatType == ChatType.FRIENDS_CHAT? client.getFriendsChatManager().getName() : client.getClanChannel().getName();
-		String fileType = csvMode? ".csv" : ".txt";
+		String fileName = chatType == ChatType.FRIENDS_CHAT ? client.getFriendsChatManager().getName() : client.getClanChannel().getName();
+		String fileType = csvMode ? ".csv" : ".txt";
 
-		if(timestamp) {
+		if (timestamp) {
 			Date date = new Date();
 			SimpleDateFormat DateFor = new SimpleDateFormat("dd-MM-yyyy");
 			String stringDate = DateFor.format(date);
@@ -156,15 +154,15 @@ public class ClanListExporterPlugin extends Plugin
 		}
 
 		try {
-			if (!EXPORT_DIR.exists()){
+			if (!EXPORT_DIR.exists()) {
 				EXPORT_DIR.mkdir();
 			}
 
 			FileWriter fw = new FileWriter(EXPORT_DIR + "/" + fileName + fileType);
 			for (String name : list)
-				if(config.csvMode()) {
+				if (config.csvMode()) {
 					fw.write(name + ",");
-				}else {
+				} else {
 					fw.write(name + "\r\n");
 				}
 			fw.close();
