@@ -41,8 +41,8 @@ public class ClanListExporterPlugin extends Plugin {
 	private static final WidgetMenuOption CLAN_CHAT;
 
 	static {
-		FRIENDS_CHAT = new WidgetMenuOption("Export", "Friends Chat", 46333955);
-		CLAN_CHAT = new WidgetMenuOption("Export", "Clan Chat", 46333956);
+		FRIENDS_CHAT = new WidgetMenuOption("Export", "Friends Chat Members", 46333955);
+		CLAN_CHAT = new WidgetMenuOption("Export", "Clan Chat Members", 46333956);
 	}
 
 	@Inject
@@ -81,10 +81,10 @@ public class ClanListExporterPlugin extends Plugin {
 
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event) throws Exception {
-		if (Text.removeTags(event.getMenuTarget()).equals("Friends Chat")) {
+		if (Text.removeTags(event.getMenuTarget()).equals("Friends Chat Members")) {
 			exportList(ChatType.FRIENDS_CHAT);
 		}
-		if (Text.removeTags(event.getMenuTarget()).equals("Clan Chat")) {
+		if (Text.removeTags(event.getMenuTarget()).equals("Clan Chat Members")) {
 			exportList(ChatType.CLAN_CHAT);
 		}
 	}
