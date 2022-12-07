@@ -51,6 +51,13 @@ public class ClanListExporterPlugin extends Plugin
 	}
 
 	public static final File EXPORT_DIR = new File(RUNELITE_DIR, "clanlistexports");
+	private static final WidgetMenuOption FRIENDS_CHAT;
+	private static final WidgetMenuOption CLAN_CHAT;
+
+	static {
+		FRIENDS_CHAT = new WidgetMenuOption("Export", "Friends Chat", 46333955);
+		CLAN_CHAT = new WidgetMenuOption("Export", "Clan Chat", 46333956);
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -62,14 +69,6 @@ public class ClanListExporterPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		removeExportMenuItem();
-	}
-
-	private static final WidgetMenuOption FRIENDS_CHAT;
-	private static final WidgetMenuOption CLAN_CHAT;
-
-	static {
-		FRIENDS_CHAT = new WidgetMenuOption("Export", "Friends Chat", 46333955);
-		CLAN_CHAT = new WidgetMenuOption("Export", "Clan Chat", 46333956);
 	}
 
 	private void addExportMenuItem() {
