@@ -17,4 +17,4 @@ The include offline members will export everyone from clan chat regardless of th
 
 By default the exported list is one name per line, however this can be changed to a CSV file with the CSV format option
 
-Each file can optionally be timestamped to prevent the last the most recent export being replaced
+Each file can optionally be timestamped to prevent the most recent export being overwritten
