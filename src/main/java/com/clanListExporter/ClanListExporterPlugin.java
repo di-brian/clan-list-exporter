@@ -60,12 +60,12 @@ public class ClanListExporterPlugin extends Plugin {
 	}
 
 	@Override
-	protected void startUp() throws Exception {
+	protected void startUp() {
 		addExportMenuItem();
 	}
 
 	@Override
-	protected void shutDown() throws Exception {
+	protected void shutDown() {
 		removeExportMenuItem();
 	}
 
@@ -80,7 +80,7 @@ public class ClanListExporterPlugin extends Plugin {
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event) throws Exception {
+	public void onMenuOptionClicked(MenuOptionClicked event) {
 		if (Text.removeTags(event.getMenuTarget()).equals("Friends Chat Members")) {
 			exportList(ChatType.FRIENDS_CHAT);
 		}
@@ -150,7 +150,7 @@ public class ClanListExporterPlugin extends Plugin {
 			Date date = new Date();
 			SimpleDateFormat DateFor = new SimpleDateFormat("dd-MM-yyyy");
 			String stringDate = DateFor.format(date);
-			fileName = fileName.concat("-").concat(stringDate);
+			fileName = fileName.concat("_").concat(stringDate);
 		}
 
 		try {
@@ -160,7 +160,7 @@ public class ClanListExporterPlugin extends Plugin {
 
 			FileWriter fw = new FileWriter(EXPORT_DIR + "/" + fileName + fileType);
 			for (String name : list)
-				if (config.csvMode()) {
+				if (csvMode) {
 					fw.write(name + ",");
 				} else {
 					fw.write(name + "\r\n");
