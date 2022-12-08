@@ -143,7 +143,7 @@ public class ClanListExporterPlugin extends Plugin {
 
 	public void writeToFile(List<String> list, Enum chatType, boolean csvMode, boolean timestamp) {
 
-		String fileName = chatType == ChatType.FRIENDS_CHAT ? client.getFriendsChatManager().getName() : client.getClanChannel().getName();
+		String fileName = chatType == ChatType.FRIENDS_CHAT ? client.getFriendsChatManager().getOwner() : client.getClanChannel().getName();
 		String fileType = csvMode ? ".csv" : ".txt";
 
 		if (timestamp) {
