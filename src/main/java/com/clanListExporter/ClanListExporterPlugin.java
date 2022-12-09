@@ -120,7 +120,7 @@ public class ClanListExporterPlugin extends Plugin {
 				chatMessageManager.queue(
 						QueuedMessage.builder()
 								.type(ChatMessageType.CONSOLE)
-								.runeLiteFormattedMessage("Please enter a clan chat before trying to export!.")
+								.runeLiteFormattedMessage("Please enter a clan chat before trying to export!")
 								.build());
 			}
 		}
@@ -134,7 +134,7 @@ public class ClanListExporterPlugin extends Plugin {
 				chatMessageManager.queue(
 						QueuedMessage.builder()
 								.type(ChatMessageType.CONSOLE)
-								.runeLiteFormattedMessage("Please enter a friends chat before trying to export!.")
+								.runeLiteFormattedMessage("Please enter a friends chat before trying to export!")
 								.build());
 			}
 		}
