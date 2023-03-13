@@ -148,7 +148,7 @@ public class ClanListExporterPlugin extends Plugin {
 
 		if (timestamp) {
 			Date date = new Date();
-			SimpleDateFormat DateFor = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat DateFor = new SimpleDateFormat("dd-MM-yyyy-HH_mm_ss");
 			String stringDate = DateFor.format(date);
 			fileName = fileName.concat("_").concat(stringDate);
 		}
